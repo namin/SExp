@@ -1,15 +1,12 @@
-#reference 'file:SExp.Semantics.dll';
-#reference 'file:SExp.Learning.dll';
-using SExp;
-using SExp.Semantics;
-using SExp.Learning;
 using semantics SExp.Semantics.Semantics;
 using learners SExp.Learning.Learners;
 
 language SExp;
 
-@complete feature double Score = RankingScore;
+@complete feature double Score = SExp.Learning.RankingScore;
 
 // Your grammar rules here. For example:
-@start string P := x;
-@input string x;
+@start SExp.Semantics.SExp e := Select(c) | Cons(e, e) | Symbol(s);
+SExp.Semantics.SExp c := Input(x) | Car(c) | Cdr(c);
+string s;
+@input SExp.Semantics.SExp x;
