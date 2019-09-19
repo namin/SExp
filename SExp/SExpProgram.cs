@@ -72,6 +72,10 @@ namespace SExp
             Console.WriteLine("all programs: "+ps);
             var best = ps.TopK(rankingScores).First();
             Console.WriteLine("best program: "+best);
+            foreach(var ex in spec.Examples)
+            {
+                System.Diagnostics.Debug.Assert(best.Invoke(ex.Key).Equals(ex.Value));
+            }
             return best;
         }
         public static void Main(string[] args)
@@ -103,6 +107,12 @@ namespace SExp
             learnFromExamples(grammar, engine, rankingScores, new Dictionary<string, string>
             {
                 ["a"] = "(a a)"
+            });
+            Console.WriteLine("6");
+            learnFromExamples(grammar, engine, rankingScores, new Dictionary<string, string>
+            {
+                ["(a b)"] = "((a b) (b a))",
+                ["(a1 b1)"] = "((a1 b1) (b1 a1))"
             });
         }
     }

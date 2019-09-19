@@ -26,10 +26,10 @@ namespace SExp
         public static Tuple<Semantics.SExp, String> parseSExp(String s)
         {
             var t = s.Trim();
-            if (t.Length > 0 && t[0] == '(' && t[t.Length - 1] == ')')
+            if (t.Length > 0 && t[0] == '(')
             {
                 var l = new List<Semantics.SExp>();
-                var m = s.Substring(1, t.Length - 2).Trim();
+                var m = s.Substring(1).Trim();
                 var r = parse(m);
                 while (r != null)
                 {
@@ -37,12 +37,18 @@ namespace SExp
                     m = r.Item2.Trim();
                     r = parse(r.Item2);
                 }
-                Semantics.SExp acc = new Semantics.Atom("nil");
-                for (int i = l.Count - 1; i >= 0; i--)
+                if (m.Length>0 && m[0] == ')')
                 {
-                    acc = new Semantics.Cons(l[i], acc);
+                    Semantics.SExp acc = new Semantics.Atom("nil");
+                    for (int i = l.Count - 1; i >= 0; i--)
+                    {
+                        acc = new Semantics.Cons(l[i], acc);
+                    }
+                    return Tuple.Create(acc, m.Substring(1).Trim());
+                } else
+                {
+                    return null;
                 }
-                return Tuple.Create(acc, m);
             }
             else
             {
