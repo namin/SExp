@@ -1,0 +1,15 @@
+#reference 'file:SExp.Semantics.dll';
+#reference 'file:SExp.Learning.dll';
+using SExp;
+using SExp.Semantics;
+using SExp.Learning;
+using semantics SExp.Semantics.Semantics;
+using learners SExp.Learning.Learners;
+
+language SExp;
+
+@complete feature double Score = RankingScore;
+
+// Your grammar rules here. For example:
+@start string P := x;
+@input string x;
