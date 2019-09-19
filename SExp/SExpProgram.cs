@@ -41,6 +41,15 @@ namespace SExp
                 }
             });
         }
+        static string padding(int n)
+        {
+            var r = "";
+            for (int i = 0; i<n; i++)
+            {
+                r += " ";
+            }
+            return r;
+        }
         static ExampleSpec toSpec(Grammar grammar, Dictionary<string,string> exs)
         {
             var d = new Dictionary<State, object>();
@@ -50,8 +59,8 @@ namespace SExp
                 var v = SExpParser.parseFull(ex.Value);
                 System.Diagnostics.Debug.Assert(k != null);
                 System.Diagnostics.Debug.Assert(v != null);
-                Console.WriteLine(k);
-                Console.WriteLine(v);
+                Console.WriteLine("input:  "+ex.Key+padding(ex.Value.Length - ex.Key.Length)+" -- "+k);
+                Console.WriteLine("output: "+ex.Value+padding(ex.Key.Length - ex.Value.Length)+" -- " +v);
                 d.Add(State.CreateForLearning(grammar.InputSymbol, k), v);
             }
             return new ExampleSpec(d);
@@ -60,9 +69,9 @@ namespace SExp
         {
             var spec = toSpec(grammar, exs);
             var ps = engine.LearnGrammar(spec);
-            Console.WriteLine(ps);
+            Console.WriteLine("all programs: "+ps);
             var best = ps.TopK(rankingScores).First();
-            Console.WriteLine(best);
+            Console.WriteLine("best program: "+best);
             return best;
         }
         public static void Main(string[] args)
